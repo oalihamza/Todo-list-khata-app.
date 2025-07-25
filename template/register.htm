@@ -1,0 +1,117 @@
+{% extends 'base.htm' %}
+{% block content %}
+
+<div class="text-right mb-4">
+  <figure class="figure">
+    <label for="userImage">
+      <img src="https://via.placeholder.com/200?text=Upload+Image"
+           id="previewImage"
+           class="figure-img img-fluid rounded-circle border border-3 border-primary shadow-sm profile-upload"
+           style="width: 200px; height: 200px; object-fit: cover; cursor: pointer; transition: 0.3s;">
+    </label>
+    <figcaption class="figure-caption mt-2 text-muted">Click the image to upload your profile picture</figcaption>
+    <input type="file" name="user_image" id="userImage" accept="image/*" class="d-none" required>
+  </figure>
+</div>
+
+          <!-- Form Starts -->
+          <form class="row g-4" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h2 class="text-center fw-bold text-primary mb-4">Create Your Account</h2>
+
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" name="first_name" class="form-control" id="floatingFirstName" placeholder="First name" required>
+                <label for="floatingFirstName">First Name</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" name="last_name" class="form-control" id="floatingLastName" placeholder="Last name" required>
+                <label for="floatingLastName">Last Name</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" name="username" class="form-control" id="floatingUsername" placeholder="Username" required>
+                <label for="floatingUsername">Username</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+                <label for="floatingPassword">Password</label>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-floating">
+                <input type="text" name="address" class="form-control" id="floatingAddress" placeholder="1234 Main St" required>
+                <label for="floatingAddress">Address</label>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-floating">
+                <input type="text" name="address2" class="form-control" id="floatingAddress2" placeholder="Apartment, floor, etc.">
+                <label for="floatingAddress2">Address 2</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="tel" name="phone" class="form-control" id="floatingPhone" placeholder="Phone number">
+                <label for="floatingPhone">Phone Number</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="email" name="email" class="form-control" id="floatingEmail" placeholder="Email" required>
+                <label for="floatingEmail">Email</label>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck" required>
+                <label class="form-check-label" for="gridCheck">
+                  I agree to the terms and conditions
+                </label>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <p class="text-muted text-center">Already have an account?
+                <a href="{% url 'login_page' %}" class="text-decoration-none fw-semibold text-primary">Sign in here</a>
+              </p>
+            </div>
+
+            <div class="col-12 text-center">
+              <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm">Sign Up</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Image Preview Script -->
+<script>
+  const imageInput = document.getElementById('userImage');
+  const previewImage = document.getElementById('previewImage');
+
+  imageInput.addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+      previewImage.src = URL.createObjectURL(file);
+    }
+  });
+</script>
+
+{% endblock %}

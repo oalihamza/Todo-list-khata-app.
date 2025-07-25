@@ -1,0 +1,146 @@
+{% extends 'base.htm' %}
+
+{% block title %}Contact Us - TaskTrack{% endblock %}
+
+{% block content %}
+<style>
+  .contact-container {
+    background: linear-gradient(to right, #e3f2fd, #e8f5e9);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  }
+
+  .contact-header h2 {
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  .contact-header p {
+    font-size: 1.1rem;
+    color: #444;
+  }
+
+  .divider {
+    height: 4px;
+    width: 80px;
+    background-color: #198754;
+    margin: 15px auto 30px;
+    border-radius: 10px;
+  }
+
+  .form-control {
+    border-radius: 12px;
+    padding: 12px 15px;
+    font-size: 1rem;
+  }
+
+  .form-control:focus {
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.2);
+    border-color: #0d6efd;
+  }
+
+  .btn-send {
+    background: linear-gradient(135deg, #0d6efd, #198754);
+    color: white;
+    font-weight: 500;
+    padding: 12px 30px;
+    border-radius: 10px;
+    border: none;
+    transition: 0.3s ease;
+  }
+
+  .btn-send:hover {
+    opacity: 0.95;
+    transform: scale(1.02);
+  }
+
+  .info-section {
+    margin-top: 50px;
+  }
+
+  .info-section h4 {
+    color: #198754;
+    font-weight: 600;
+  }
+
+  .info-section p {
+    color: #555;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .email-link {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .email-link:hover {
+    text-decoration: underline;
+  }
+
+  .icon-box {
+    font-size: 2rem;
+    margin-right: 15px;
+    color: #0d6efd;
+  }
+</style>
+
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="contact-container">
+        <!-- Header -->
+        <div class="contact-header text-center">
+          <h2>📬 Contact Us</h2>
+          <div class="divider"></div>
+          <p>Have questions, feedback, or need support? We'd love to hear from you! Use the form below or reach out via email.</p>
+        </div>
+
+        <!-- Form -->
+        <form method="post" action="">
+          {% csrf_token %}
+          <div class="mb-4">
+            <label for="name" class="form-label fw-semibold">Your Name</label>
+            <input type="text" class="form-control shadow-sm" id="name" name="name" placeholder="e.g. John Doe" required>
+          </div>
+          <div class="mb-4">
+            <label for="email" class="form-label fw-semibold">Your Email</label>
+            <input type="email" class="form-control shadow-sm" id="email" name="email" placeholder="e.g. john@example.com" required>
+          </div>
+          <div class="mb-4">
+            <label for="message" class="form-label fw-semibold">Your Message</label>
+            <textarea class="form-control shadow-sm" id="message" name="message" rows="6" placeholder="Type your message here..." required></textarea>
+          </div>
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-send shadow">Send Message</button>
+          </div>
+        </form>
+
+        <!-- Extra Info -->
+        <div class="info-section mt-5">
+          <h4>Why Contact Us?</h4>
+          <p><span class="icon-box">💡</span> Share your suggestions to help us improve TaskTrack.</p>
+          <p><span class="icon-box">🛠️</span> Report any bugs or issues you're facing.</p>
+          <p><span class="icon-box">🤝</span> Ask questions or get support using the app.</p>
+          <p><span class="icon-box">📣</span> Request features you'd love to see in the future!</p>
+        </div>
+
+        <!-- Support Email -->
+        <div class="text-center mt-4">
+          <p class="text-muted">Prefer email? Reach us at  
+            <a href="mailto:oalihamza8@gmail.com" class="email-link">oalihamza8@gmail.com</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="position-fixed bottom-0 w-100 z-1 d-flex justify-content-start justify-content-md-center">
+  <p class="text-black small m-2 text-start text-md-center">
+    Made with ❤️ by <strong>Ali Hamza</strong> — © 2025 TaskTrack
+  </p>
+</div>
+</div>
+
+{% endblock %}

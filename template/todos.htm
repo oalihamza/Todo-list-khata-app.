@@ -1,0 +1,97 @@
+{% extends 'base.htm' %}
+{% block title %}My To-Do List{% endblock %}
+
+{% block content %}
+<style>
+  .todo-card {
+    border-radius: 1.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.05);
+    background-color: #f8f9fa;
+  }
+
+  .todo-item.completed label {
+    text-decoration: line-through;
+    color: gray;
+  }
+
+  .form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  }
+
+  .btn-add {
+    border-radius: 0.5rem;
+  }
+</style>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      <div class="text-center mb-4">
+        <h1 class="display-5 fw-bold text-primary">📝 My To-Do List</h1>
+        <p class="lead text-muted">Stay organized and productive — one task at a time!</p>
+      </div>
+
+      <!-- Add Task Form -->
+      <form method="post" class="shadow-sm p-3 rounded mb-4">
+        {% csrf_token %}
+        <input type="text" name="task_name" class="form-control form-control-lg mb-2" placeholder="Add a new task..." required>
+
+        <div class="row">
+          <div class="col-md-6">
+            <label for="ownername">Owner</label>
+            <select name="ownername" id="ownername" class="form-select">
+              
+              <option value="{{ request.user }}">{{user}}</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="payername">Payer</label>
+            <select name="payername" id="payername" class="form-select">
+              {% for username in usernames %}
+              <option value="{{ username }}">{{ username }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-add mt-3">Add</button>
+      </form>
+
+      <!-- Task List -->
+   <div class="container">
+  {% if tasks %}
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      {% for task in tasks %}
+        <div class="col">
+          <div class="card shadow border-0">
+            <div class="card-body">
+              <h5 class="card-title">{{ task.task_name }}</h5>
+              <p class="card-text">
+                <strong>Owner:</strong> {{ task.owner.username }}<br>
+                <strong>Payer:</strong> {{ task.payer.username }}
+              </p>
+              {% if task.completed %}
+                <span class="badge bg-success mb-2">updated</span>
+              {% else %}
+                <span class="badge bg-warning text-dark mb-2">orignal</span>
+              {% endif %}
+
+              <div class="d-flex justify-content-end gap-2">
+                {% if task.owner == request.user or request.user.is_superuser %}
+                <a href="{% url 'update_item' task.id %}" class="btn btn-sm btn-primary">Update</a>
+                <a href="{% url 'delete_item' task.id %}" class="btn btn-sm btn-danger"
+                    onclick="return confirm('Are you sure you want to delete this task?');">Delete</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-secondary text-center" role="alert">
+      No tasks yet. Add one above!
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
