@@ -14,9 +14,8 @@
   <div class="mb-3">
     <label>Owner</label>
     <select name="ownername" class="form-select" required>
-      {% for user in usernames %}
-        <option value="{{ user.username }}" {% if task.owner.username == user.username %}selected{% endif %}>{{ user.username }}</option>
-      {% endfor %}
+      
+        <option value="{{ user.username }}" {% if task.owner.username == user.username %}selected{% endif %}>{{ task.owner.username }}</option>
     </select>
   </div>
 

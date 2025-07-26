@@ -23,18 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-oldp=-z7r3#2)t7z%r1_59sdz$-_4y%1*s*d-e!-y19ft%+tbe'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG =False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '476d9c8c0bba.ngrok-free.app']
+ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://476d9c8c0bba.ngrok-free.app',
-    'https://www.todo.onrender.com',
-    'http://127.0.0.1:8000',
-    'http://localhost:8000',
-    'http://192.168.0.100:8000',  # Replace with your actual IP address
-    'http://0.0.0.0:8000'
-    'https://476d9c8c0bba.ngrok-free.app' 
+    
 ]
 # Application definition
 

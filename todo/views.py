@@ -97,8 +97,6 @@ def todo_page(request):
 
 def delete_item(request, id):
     task = get_object_or_404(Task, id=id)
-
-    # ✅ Only allow the owner to delete
     if task.owner != request.user:
         return HttpResponseForbidden("You are not allowed to delete this task.")
 
@@ -109,7 +107,6 @@ def delete_item(request, id):
 def update_item(request, id):
     task = get_object_or_404(Task, id=id)
 
-    # ✅ Only allow the owner to update
     if task.owner != request.user:
         return HttpResponseForbidden("You are not allowed to update this task.")
 
@@ -137,7 +134,7 @@ def delete_orphan_tasks(request):
     if request.user.is_superuser:
         deleted_count, _ = Task.objects.filter(owner=None).delete()
         return HttpResponse(f"✅ Deleted {deleted_count} orphan task(s).")
-    return HttpResponseForbidden("❌ You are not authorized to perform this action.")
+    return HttpResponseForbidden("You are not authorized to perform this action.")
 
 def contact_page(request):
     if request.method=="POST":
