@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,16 +20,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-oldp=-z7r3#2)t7z%r1_59sdz$-_4y%1*s*d-e!-y19ft%+tbe'
-
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-oldp=-z7r3#2)t7z%r1_59sdz$-_4y%1*s*d-e!-y19ft%+tbe')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG =False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['todo.onrender.com']
 
 CSRF_TRUSTED_ORIGINS = [
+    'https://todo.onrender.com']
     
-]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -118,14 +118,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
 TATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static',]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-import os
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/build/static')]
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 if os.environ.get('RENDER'):
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
