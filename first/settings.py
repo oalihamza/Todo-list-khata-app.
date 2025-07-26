@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-oldp=-z7r3#2)t7z%r1_59sdz$-_4y%1*s*d-e!-y19ft%+tbe'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =True
+DEBUG =False
 
 ALLOWED_HOSTS = []
 
@@ -125,6 +125,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 import os
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/build/static')]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+if os.environ.get('RENDER'):
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
