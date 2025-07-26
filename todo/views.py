@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login,logout,authenticate
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect
 # Create your views here.
 def home(request):
     return render(request,'home.htm')
@@ -25,6 +26,9 @@ def register_page(request):
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already exists')
             return redirect('register_page')
+        if not all([first_name, last_name, username, email, password]):
+            messages.error(request, "All fields are required.")
+            return redirect("register_page")
 
         
         user = User(
@@ -48,6 +52,7 @@ def register_page(request):
         return redirect('login_page')
 
     return render(request, 'register.htm')
+@csrf_protect
 def login_page(request):
     if request.method=="POST":
         username=request.POST.get("username")
@@ -62,7 +67,7 @@ def login_page(request):
             return redirect('login_page')
         
 
-    return render(request,'login.htm')
+    return render(request, 'login.htm')
 def logout_page(request):
     logout(request)
     return redirect('login_page')
