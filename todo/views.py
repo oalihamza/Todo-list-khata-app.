@@ -11,14 +11,14 @@ def home(request):
     return render(request,'home.htm')
 def register_page(request):
     if request.method == "POST":
-        first_name = request.POST.get("first_name")
-        last_name = request.POST.get("last_name")
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        phone = request.POST.get("phone")
-        address = request.POST.get("address")
-        address2 = request.POST.get("address2")
+        first_name = request.POST.get("first_name", "").strip()
+        last_name = request.POST.get("last_name", "").strip()
+        username = request.POST.get("username", "").strip()
+        email = request.POST.get("email", "").strip()
+        password = request.POST.get("password", "").strip()
+        phone = request.POST.get("phone", "").strip()
+        address = request.POST.get("address", "").strip()
+        address2 = request.POST.get("address2", "").strip()
 
         if User.objects.filter(email=email).exists():
             messages.error(request, 'Email already exists')
@@ -30,17 +30,18 @@ def register_page(request):
             messages.error(request, "All fields are required.")
             return redirect("register_page")
 
-        
+
         user = User(
             first_name=first_name,
             last_name=last_name,
             username=username,
             email=email
         )
-        user.set_password(password)  
+        user.set_password(password, "").strip()
+        user.is_active = True
         user.save()
 
-        
+
         Register.objects.create(
             user=user,
             phone=phone,
@@ -54,18 +55,22 @@ def register_page(request):
     return render(request, 'register.htm')
 @csrf_protect
 def login_page(request):
-    if request.method=="POST":
-        username=request.POST.get("username")
-        password=request.POST.get("password")
-        user=authenticate(username=username,password=password)
+    if request.method == "POST":
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "").strip()
+        user = authenticate(username=username, password=password)
+
         if user is not None:
-            login(request,user)
-            messages.success(request,'Login successfully')
-            return redirect('todo_page')
+            if user.is_active:
+                login(request, user)
+                messages.success(request, 'Login successful')
+                return redirect('todo_page')
+            else:
+                messages.error(request, 'Your account is inactive. Please contact admin.')
         else:
-            messages.error(request,'Invalid username or password')
-            return redirect('login_page')
-        
+            messages.error(request, 'Invalid username or password')
+
+        return redirect('login_page')
 
     return render(request, 'login.htm')
 def logout_page(request):
@@ -74,7 +79,7 @@ def logout_page(request):
 @login_required
 def todo_page(request):
     tasks = Task.objects.all()
-    usernames = User.objects.all() 
+    usernames = User.objects.all()
 
     if request.method == "POST":
         task_name = request.POST.get('task_name')
@@ -102,17 +107,19 @@ def todo_page(request):
 
 def delete_item(request, id):
     task = get_object_or_404(Task, id=id)
-    if task.owner != request.user:
-        return HttpResponseForbidden("You are not allowed to delete this task.")
+    if request.user == task.owner or request.user.is_superuser:
+        task.delete()
+        messages.success(request, "Task deleted successfully.")
+        return redirect('todo_page')
 
-    task.delete()
-    messages.success(request, "Task deleted successfully.")
-    return redirect('todo_page')
+    # ❌ Others are forbidden
+    return HttpResponseForbidden("You are not allowed to delete this task.")
 
 def update_item(request, id):
     task = get_object_or_404(Task, id=id)
 
-    if task.owner != request.user:
+    # ✅ ALLOW owner or superuser
+    if request.user != task.owner and not request.user.is_superuser:
         return HttpResponseForbidden("You are not allowed to update this task.")
 
     if request.method == "POST":
