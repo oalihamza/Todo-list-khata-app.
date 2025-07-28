@@ -30,17 +30,15 @@ def register_page(request):
             messages.error(request, "All fields are required.")
             return redirect("register_page")
 
-
         user = User(
             first_name=first_name,
             last_name=last_name,
             username=username,
             email=email
         )
-        user.set_password(password, "").strip()
+        user.set_password(password)  # ✅ Correct usage
         user.is_active = True
         user.save()
-
 
         Register.objects.create(
             user=user,
@@ -53,6 +51,7 @@ def register_page(request):
         return redirect('login_page')
 
     return render(request, 'register.htm')
+
 @csrf_protect
 def login_page(request):
     if request.method == "POST":
